@@ -12,7 +12,7 @@ Site `start.spring.io`
 
 ## Run application
 `gradle bootRun`
-`java -jar build/libs/HillelJavaEE_02.jar`
+`java -jar build/libs/HillelJavaEE_02-0.0.1-SNAPSHOT.jar`
 
 ## JSON transformer
 Jackson
