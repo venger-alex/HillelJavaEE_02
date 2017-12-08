@@ -2,9 +2,7 @@ package hillelJavaEE_02.greetings;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static java.lang.Math.pow;
 import static org.hamcrest.Matchers.lessThan;
@@ -17,18 +15,27 @@ public class GreetingComponentTest {
         // math.semestr.ru/group/uniform-distribution.php
 
         GreetingComponent gC = new GreetingComponent();
-        ArrayList<String> gList = (ArrayList<String>) gC.getGreetingsList();
-        List<Integer> randomInts = new LinkedList<>();
+        List<String> gList = gC.getGreetingsList();
+        Map<Integer, Integer> distribution = new HashMap<>();
+        Integer numberOfIterations = 1_000_000;
 
-        for (int i = 0; i < 30; i++) {
-            randomInts.add(gList.indexOf(gC.getRandomGreeting()) + 1);
+        for (int i = 0; i < numberOfIterations; i++) {
+            Integer randomValue = gList.indexOf(gC.getRandomGreeting()) + 1;
+            if(distribution.get(randomValue) == null) {
+                distribution.put(randomValue, 1);
+            } else {
+                distribution.put(randomValue, distribution.get(randomValue) + 1);
+            }
         }
+        Collection<Integer> realFrequencies = distribution.values();
 
-        Double m1 = ((double)1 / randomInts.size()) * randomInts.stream().mapToInt((m) -> m).sum();
+        Double m1 = ((double)1 / realFrequencies.size()) * realFrequencies.stream().mapToInt((m) -> m).sum();
 
-        assertThat(randomInts.stream().mapToDouble((m) -> m)
+        // helpstat.ru/statisticheskie-tablitsyi/kriticheskie-tochki-2-raspredeleniya/
+        // k =2 (size - 1), a = 0.1, -> 4.60517
+        assertThat(realFrequencies.stream().mapToDouble((m) -> m)
                                         .map((m) -> pow(m - m1, 2) / m1)
                                         .sum(),
-                    lessThan(39.09));
+                    lessThan(4.60517));
     }
 }
