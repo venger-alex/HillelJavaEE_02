@@ -17,9 +17,8 @@ public class GreetingComponentTest {
         GreetingComponent gC = new GreetingComponent();
         List<String> gList = gC.getGreetingsList();
         Map<Integer, Integer> distribution = new HashMap<>();
-        Integer numberOfIterations = 1_000_000;
 
-        for (int i = 0; i < numberOfIterations; i++) {
+        for (int i = 0; i < 1_000_000; i++) {
             Integer randomValue = gList.indexOf(gC.getRandomGreeting()) + 1;
             if(distribution.get(randomValue) == null) {
                 distribution.put(randomValue, 1);
