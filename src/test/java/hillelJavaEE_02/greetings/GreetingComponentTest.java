@@ -14,19 +14,13 @@ public class GreetingComponentTest {
     public void getRandomGreeting() {
         // math.semestr.ru/group/uniform-distribution.php
 
-        GreetingComponent gC = new GreetingComponent();
-        List<String> gList = gC.getGreetingsList();
-        Map<Integer, Integer> distribution = new HashMap<>();
+        GreetingComponent greetingComponent = new GreetingComponent();
+        Map<String, Integer> distributionMap = new HashMap<>();
 
         for (int i = 0; i < 1_000_000; i++) {
-            Integer randomValue = gList.indexOf(gC.getRandomGreeting()) + 1;
-            if(distribution.get(randomValue) == null) {
-                distribution.put(randomValue, 1);
-            } else {
-                distribution.put(randomValue, distribution.get(randomValue) + 1);
-            }
+            distributionMap.merge(greetingComponent.getRandomGreeting(), 1, (a, b) -> a + b);
         }
-        Collection<Integer> realFrequencies = distribution.values();
+        Collection<Integer> realFrequencies = distributionMap.values();
 
         Double m1 = ((double)1 / realFrequencies.size()) * realFrequencies.stream().mapToInt((m) -> m).sum();
 
