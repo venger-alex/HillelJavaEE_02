@@ -2,6 +2,7 @@ package hillelJavaEE_02.pet;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +45,11 @@ public class PetController {
         return ResponseEntity.ok(pets.get(id));
     }
 
+    @PostMapping("/pets")
+    public void createPet(@RequestBody Pet pet) {
+        pets.add(pet);
+    }
+
     private Predicate<Pet> filterBySpecies(String species) {
         return pet -> pet.getSpecies().equals(species);
     }
@@ -57,6 +63,7 @@ class ErrorBody {
 }
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 class Pet {
     private String name;
