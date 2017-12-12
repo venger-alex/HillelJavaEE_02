@@ -3,9 +3,11 @@ package hillelJavaEE_02.pet;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -17,7 +19,7 @@ public class PetController {
         put(1, new Pet("Jerry", "Mouse", 1));
     }};
 
-    private Integer counter = 2;
+    private Integer counter = 1;
 
     //@RequestMapping(value = "/greeting", method = RequestMethod.GET)
     @GetMapping("/greeting")
@@ -53,8 +55,9 @@ public class PetController {
     }
 
     @PostMapping("/pets")
-    public void createPet(@RequestBody Pet pet) {
-        pets.put(counter++, pet);
+    public ResponseEntity<Void> createPet(@RequestBody Pet pet) {
+        pets.put(++counter, pet);
+        return ResponseEntity.created(URI.create("/pets/" + counter)).build();
     }
 
     @PutMapping("/pets/{id}")
@@ -63,13 +66,22 @@ public class PetController {
     }
 
     @DeleteMapping("/pets/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePet(@PathVariable Integer id) {
+        if(!pets.containsKey(id)) {
+            throw new NoSuchPetException();
+        }
         pets.remove(id);
     }
 
     private Predicate<Pet> filterBySpecies(String species) {
         return pet -> pet.getSpecies().equals(species);
     }
+}
+
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+class NoSuchPetException extends RuntimeException {
+
 }
 
 @Data
