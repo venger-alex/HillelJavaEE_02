@@ -2,6 +2,7 @@ package hillelJavaEE_02.pet;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -32,9 +33,27 @@ public class PetController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/pets/{id}")
+    public ResponseEntity<?> getPetById(@PathVariable Integer id) {
+        if(id >= pets.size()) {
+            return ResponseEntity
+                    //.notFound().build()
+                    .badRequest().body(new ErrorBody("There is no pet with ID = " + id));
+        }
+
+        return ResponseEntity.ok(pets.get(id));
+    }
+
     private Predicate<Pet> filterBySpecies(String species) {
         return pet -> pet.getSpecies().equals(species);
     }
+}
+
+@Data
+@AllArgsConstructor
+class ErrorBody {
+    private final Integer code = 400;
+    private String msg;
 }
 
 @Data
