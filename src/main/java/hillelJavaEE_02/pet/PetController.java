@@ -6,18 +6,18 @@ import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @RestController
 public class PetController {
-    private List<Pet> pets = new ArrayList<Pet>() {{
-        add(new Pet("Tom", "Cat", 3));
-        add(new Pet("Jerry", "Mouse", 1));
+    private Map<Integer, Pet> pets = new HashMap<Integer, Pet>() {{
+        put(0, new Pet("Tom", "Cat", 3));
+        put(1, new Pet("Jerry", "Mouse", 1));
     }};
+
+    private Integer counter = 2;
 
     //@RequestMapping(value = "/greeting", method = RequestMethod.GET)
     @GetMapping("/greeting")
@@ -26,12 +26,19 @@ public class PetController {
     }
 
     @GetMapping("/pets")
-    public List<Pet> getPets(@RequestParam Optional<String> species) {
+    public List<Pet> getPets(@RequestParam Optional<String> species,
+                             @RequestParam Optional<Integer> age) {
         Predicate<Pet> speciesFilter = species.map(this::filterBySpecies).orElse(pet -> true);
+        Predicate<Pet> ageFilter = age.map(this::filterByAge).orElse(pet -> true);
+        Predicate<Pet> complexFilter = speciesFilter.and(ageFilter);
 
-        return pets.stream()
-                .filter(speciesFilter)
+        return pets.values().stream()
+                .filter(complexFilter)
                 .collect(Collectors.toList());
+    }
+
+    private Predicate<Pet> filterByAge(Integer age) {
+        return pet -> pet.getAge().equals(age);
     }
 
     @GetMapping("/pets/{id}")
@@ -47,17 +54,17 @@ public class PetController {
 
     @PostMapping("/pets")
     public void createPet(@RequestBody Pet pet) {
-        pets.add(pet);
+        pets.put(counter++, pet);
     }
 
     @PutMapping("/pets/{id}")
     public void updatePet(@PathVariable Integer id, @RequestBody Pet pet) {
-        pets.set(id, pet);
+        pets.put(id, pet);
     }
 
     @DeleteMapping("/pets/{id}")
     public void deletePet(@PathVariable Integer id) {
-        pets.remove(id.intValue());
+        pets.remove(id);
     }
 
     private Predicate<Pet> filterBySpecies(String species) {
