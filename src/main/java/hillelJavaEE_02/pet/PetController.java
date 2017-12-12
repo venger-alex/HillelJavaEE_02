@@ -55,6 +55,11 @@ public class PetController {
         pets.set(id, pet);
     }
 
+    @DeleteMapping("/pets/{id}")
+    public void deletePet(@PathVariable Integer id) {
+        pets.remove(id.intValue());
+    }
+
     private Predicate<Pet> filterBySpecies(String species) {
         return pet -> pet.getSpecies().equals(species);
     }
