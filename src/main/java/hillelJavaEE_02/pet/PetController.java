@@ -50,6 +50,11 @@ public class PetController {
         pets.add(pet);
     }
 
+    @PutMapping("/pets/{id}")
+    public void updatePet(@PathVariable Integer id, @RequestBody Pet pet) {
+        pets.set(id, pet);
+    }
+
     private Predicate<Pet> filterBySpecies(String species) {
         return pet -> pet.getSpecies().equals(species);
     }
