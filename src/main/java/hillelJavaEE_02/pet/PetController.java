@@ -47,8 +47,8 @@ public class PetController {
     public ResponseEntity<?> getPetById(@PathVariable Integer id) {
         if(id >= pets.size()) {
             return ResponseEntity
-                    //.notFound().build()
-                    .badRequest().body(new ErrorBody("There is no pet with ID = " + id));
+                    .notFound().build();
+                    //.badRequest().body(new ErrorBody("There is no pet with ID = " + id));
         }
 
         return ResponseEntity.ok(pets.get(id));
