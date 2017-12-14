@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -19,8 +19,6 @@ public class DoctorController {
         put(0, new Doctor(0, "Doc", "surgeon"));
         put(1, new Doctor(1, "Alex", "doctor"));
     }};
-
-    private AtomicInteger counter = new AtomicInteger(1);
 
     @GetMapping("/doctors")
     public List<Doctor> getDoctors(@RequestParam Optional<String> specialization,
@@ -44,11 +42,10 @@ public class DoctorController {
 
     @GetMapping("/doctors/{id}")
     public ResponseEntity<?> getDoctorById(@PathVariable Integer id) {
-        if(id >= doctors.size())  {
-            return ResponseEntity.notFound().build();
-        }
+        Optional<Doctor> findDoctor = Optional.ofNullable(doctors.get(id));
 
-        return ResponseEntity.ok(doctors.get(id));
+        return findDoctor.map(doctor -> ResponseEntity.ok(doctor))
+                            .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("/doctors")
@@ -57,7 +54,7 @@ public class DoctorController {
             return ResponseEntity.badRequest().body(new ErrorBody("You can not create a doctor with a predefined ID"));
         }
 
-        doctor.setId(counter.incrementAndGet());
+        doctor.setId(ThreadLocalRandom.current().nextInt(0, Integer.MAX_VALUE));
         doctors.put(doctor.getId(), doctor);
         return ResponseEntity.created(URI.create("/doctors/" + doctor.getId())).build();
     }
