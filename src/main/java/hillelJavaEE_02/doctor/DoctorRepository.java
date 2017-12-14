@@ -1,19 +1,28 @@
 package hillelJavaEE_02.doctor;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Repository
+@RequiredArgsConstructor
 public class DoctorRepository {
     private Map<Integer, Doctor> doctors = new ConcurrentHashMap<Integer, Doctor>() {{
         put(0, new Doctor(0, "Doc", "surgeon"));
         put(1, new Doctor(1, "Alex", "doctor"));
     }};
+
+    private final DoctorConfig doctorConfig;
+
+    public List<String> findAllSpecialization() {
+        return doctorConfig.getList();
+    }
 
     public Collection<Doctor> findAll() {
         return doctors.values();

@@ -14,6 +14,11 @@ import java.util.Optional;
 public class DoctorController {
     private final DoctorService doctorService;
 
+    @GetMapping("/doctors/specializations")
+    public List<String> getSpecializations() {
+        return doctorService.getSpecializations();
+    }
+
     @GetMapping("/doctors")
     public List<Doctor> getDoctors(@RequestParam Optional<String> specialization,
                                    @RequestParam Optional<String> name) {

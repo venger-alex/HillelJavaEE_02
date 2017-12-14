@@ -13,6 +13,10 @@ import java.util.stream.Collectors;
 public class DoctorService {
     private final DoctorRepository doctorRepository;
 
+    public List<String> getSpecializations() {
+        return doctorRepository.findAllSpecialization();
+    }
+
     public List<Doctor> getDoctors(Optional<String> specialization,
                                    Optional<String> name) {
 
