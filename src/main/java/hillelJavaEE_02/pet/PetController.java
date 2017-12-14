@@ -57,8 +57,9 @@ public class PetController {
 
     @PostMapping("/pets")
     public ResponseEntity<Void> createPet(@RequestBody Pet pet) {
-        pets.put(counter.incrementAndGet(), pet);
-        return ResponseEntity.created(URI.create("/pets/" + counter.get())).build();
+        Integer id = counter.incrementAndGet();
+        pets.put(id, pet);
+        return ResponseEntity.created(URI.create("/pets/" + id)).build();
     }
 
     @PutMapping("/pets/{id}")
