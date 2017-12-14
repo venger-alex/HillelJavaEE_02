@@ -1,4 +1,4 @@
-doctor-specialization:
-  list:
+doctor-configuration:
+  specializations:
     - surgeon
     - doctor

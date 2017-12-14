@@ -1,21 +1,17 @@
 package hillelJavaEE_02.doctor;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @Configuration
-@ConfigurationProperties(prefix = "doctor-specialization")
+@ConfigurationProperties(prefix = "doctor-configuration")
+@NoArgsConstructor
+@Getter
 public class DoctorConfig {
-    private List<String> list;
-
-    DoctorConfig() {
-        this.list = new CopyOnWriteArrayList<>();
-    }
-
-    public List<String> getList() {
-        return this.list;
-    }
+    private List<String> specializations = new ArrayList<>();
 }

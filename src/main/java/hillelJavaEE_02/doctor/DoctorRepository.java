@@ -1,11 +1,9 @@
 package hillelJavaEE_02.doctor;
 
-import hillelJavaEE_02.doctor.util.NoSuchSpecializationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,12 +17,6 @@ public class DoctorRepository {
         put(1, new Doctor(1, "Alex", "doctor"));
     }};
 
-    private final DoctorConfig doctorConfig;
-
-    public List<String> findAllSpecialization() {
-        return doctorConfig.getList();
-    }
-
     public Collection<Doctor> findAll() {
         return doctors.values();
     }
@@ -34,10 +26,6 @@ public class DoctorRepository {
     }
 
     public Doctor save(Doctor doctor) {
-        if(!this.findAllSpecialization().contains(doctor.getSpecialization())) {
-            throw new NoSuchSpecializationException("The specialty should be from the list in the configuration: " + doctor.getSpecialization());
-        }
-
         if (doctor.getId() == null) {
             doctor.setId(ThreadLocalRandom.current().nextInt(0, Integer.MAX_VALUE));
         }

@@ -1,5 +1,6 @@
 package hillelJavaEE_02.doctor;
 
+import hillelJavaEE_02.doctor.util.NoSuchSpecializationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +13,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DoctorService {
     private final DoctorRepository doctorRepository;
+    private final DoctorConfig doctorConfig;
 
     public List<String> getSpecializations() {
-        return doctorRepository.findAllSpecialization();
+        return doctorConfig.getSpecializations();
     }
 
     public List<Doctor> getDoctors(Optional<String> specialization,
@@ -41,6 +43,10 @@ public class DoctorService {
     }
 
     public Doctor save(Doctor doctor) {
+        if(!this.getSpecializations().contains(doctor.getSpecialization())) {
+            throw new NoSuchSpecializationException("The specialty should be from the list in the configuration: " + doctor.getSpecialization());
+        }
+
         return doctorRepository.save(doctor);
     }
 
