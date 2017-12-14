@@ -2,6 +2,7 @@ package hillelJavaEE_02.doctor;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,6 +64,23 @@ public class DoctorController {
         doctors.put(doctor.getId(), doctor);
         return ResponseEntity.created(URI.create("/doctors/" + doctor.getId())).build();
     }
+
+    @PutMapping("/doctors/{id}")
+    public ResponseEntity<?> updateDoctor(@PathVariable Integer id, @RequestBody Doctor doctor) {
+        if(!doctors.containsKey(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if(!id.equals(doctor.getId())) {
+            return ResponseEntity.badRequest().body(new ErrorBody("You can not change doctor ID"));
+        }
+
+        doctor.setId(id);
+        doctors.put(id, doctor);
+        return ResponseEntity.noContent().build();
+    }
+
+
 
 }
 
