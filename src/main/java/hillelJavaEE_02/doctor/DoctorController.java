@@ -2,11 +2,9 @@ package hillelJavaEE_02.doctor;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.Doc;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -80,8 +78,14 @@ public class DoctorController {
         return ResponseEntity.noContent().build();
     }
 
-
-
+    @DeleteMapping("/doctors/{id}")
+    public ResponseEntity<?> deleteDoctor(@PathVariable Integer id) {
+        if(!doctors.containsKey(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        doctors.remove(id);
+        return ResponseEntity.noContent().build();
+    }
 }
 
 @Data
