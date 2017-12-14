@@ -1,7 +1,6 @@
 package hillelJavaEE_02.doctor;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import hillelJavaEE_02.doctor.util.ErrorBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,12 +85,5 @@ public class DoctorController {
         doctors.remove(id);
         return ResponseEntity.noContent().build();
     }
-}
-
-@Data
-@AllArgsConstructor
-class ErrorBody {
-    private final Integer code = 400;
-    private String msg;
 }
 
