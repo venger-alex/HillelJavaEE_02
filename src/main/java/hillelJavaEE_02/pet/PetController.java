@@ -43,7 +43,6 @@ public class PetController {
     @PostMapping("/pets")
     public ResponseEntity<Void> createPet(@RequestBody Pet pet) {
         Pet saved = petService.save(pet);
-
         return ResponseEntity.created(URI.create("/pets/" + saved.getId())).build();
     }
 
