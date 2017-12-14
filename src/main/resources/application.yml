@@ -1,0 +1,4 @@
+doctor-configuration:
+  specializations:
+    - surgeon
+    - doctor
