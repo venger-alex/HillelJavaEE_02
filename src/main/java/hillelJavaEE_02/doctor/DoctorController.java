@@ -45,11 +45,15 @@ public class DoctorController {
 
     @GetMapping("/doctors/{id}")
     public ResponseEntity<?> getDoctorById(@PathVariable Integer id) {
-        if(id >= doctors.size())  {
-            return ResponseEntity.notFound().build();
-        }
+        // If so...)
+        return Optional.ofNullable(doctors.get(id))
+                .map(doctor -> ResponseEntity.ok(doctor))
+                .orElse(ResponseEntity.notFound().build());
 
-        return ResponseEntity.ok(doctors.get(id));
+//        if(!doctors.containsKey(id))  {
+//            return ResponseEntity.notFound().build();
+//        }
+//        return ResponseEntity.ok(doctors.get(id));
     }
 
     @PostMapping("/doctors")
