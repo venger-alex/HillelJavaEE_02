@@ -1,14 +1,15 @@
 package hillelJavaEE_02.pet;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import hillelJavaEE_02.util.ErrorBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -56,12 +57,17 @@ public class PetController {
 
     @PostMapping("/pets")
     public ResponseEntity<Void> createPet(@RequestBody Pet pet) {
-        pets.put(++counter, pet);
+        Integer id;
+
+        synchronized (this) {
+            id = ++counter;
+            pets.put(id, pet);
+        }
         return ResponseEntity.created(URI.create("/pets/" + counter)).build();
     }
 
     @PutMapping("/pets/{id}")
-    public void updatePet(@PathVariable Integer id, @RequestBody Pet pet) {
+    public synchronized void updatePet(@PathVariable Integer id, @RequestBody Pet pet) {
         pets.put(id, pet);
     }
 
@@ -77,25 +83,4 @@ public class PetController {
     private Predicate<Pet> filterBySpecies(String species) {
         return pet -> pet.getSpecies().equals(species);
     }
-}
-
-@ResponseStatus(HttpStatus.BAD_REQUEST)
-class NoSuchPetException extends RuntimeException {
-
-}
-
-@Data
-@AllArgsConstructor
-class ErrorBody {
-    private final Integer code = 400;
-    private String msg;
-}
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-class Pet {
-    private String name;
-    private String species;
-    private Integer age;
 }
