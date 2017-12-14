@@ -1,12 +1,12 @@
 package hillelJavaEE_02.doctor;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.print.Doc;
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -53,4 +53,23 @@ public class DoctorController {
         return ResponseEntity.ok(doctors.get(id));
     }
 
+    @PostMapping("/doctors")
+    public ResponseEntity<?> createDoctor(@RequestBody Doctor doctor) {
+        if(doctor.getId() != null) {
+            return ResponseEntity.badRequest().body(new ErrorBody("You can not create a doctor with a predefined ID"));
+        }
+
+        doctor.setId(counter.incrementAndGet());
+        doctors.put(doctor.getId(), doctor);
+        return ResponseEntity.created(URI.create("/doctors/" + doctor.getId())).build();
+    }
+
 }
+
+@Data
+@AllArgsConstructor
+class ErrorBody {
+    private final Integer code = 400;
+    private String msg;
+}
+
