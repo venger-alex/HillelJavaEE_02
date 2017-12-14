@@ -1,4 +1,10 @@
+
 doctor-configuration:
   specializations:
     - surgeon
     - doctor
+
+clinic-info:
+  name: 'my clinic'
+  working-hours: '8-17'
+
