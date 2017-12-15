@@ -11,7 +11,25 @@ import lombok.RequiredArgsConstructor;
 public class PetService {
     private final JpaPetRepository petRepository;
 
-    public List<Pet> getPets(Optional<String> species, Optional<Integer> age) {
+    public List<Pet> getPetsUsingSingleJpaMethod(Optional<String> species, Optional<Integer> age) {
+        return petRepository.findNullableBySpeciesAndAge(species.orElse(null), age.orElse(null));
+    }
+
+    public List<Pet> getPetsUsingSeparateJpaMethods(Optional<String> species, Optional<Integer> age) {
+        if (species.isPresent() && age.isPresent()) {
+            return petRepository.findBySpeciesAndAge(species.get(), age.get());
+        }
+        if (species.isPresent()) {
+            return petRepository.findBySpecies(species.get());
+        }
+        if (age.isPresent()) {
+            return petRepository.findByAge(age.get());
+        }
+        return petRepository.findAll();
+
+    }
+
+    public List<Pet> getPetsUsingStreamFilters(Optional<String> species, Optional<Integer> age) {
         Predicate<Pet> specieFilter = species.map(this::filterByScpecies)
                 .orElse(pet -> true);
 
