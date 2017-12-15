@@ -16,3 +16,7 @@ Site `start.spring.io`
 
 ## JSON transformer
 Jackson
+
+Configuration: Spring appendix A https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+
+Spring data method query DSL https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation
