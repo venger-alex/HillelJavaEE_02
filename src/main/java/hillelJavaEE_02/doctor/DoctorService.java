@@ -22,20 +22,8 @@ public class DoctorService {
     public List<Doctor> getDoctors(Optional<String> specialization,
                                    Optional<String> name) {
 
-        Predicate<Doctor> filterBySpecialization = specialization.map(this::filterBySpecialization)
-                .orElse(doctor -> true);
-        Predicate<Doctor> filterByName = name.map(this::filterByName).orElse(doctor -> true);
-        Predicate<Doctor> complexFilter = filterBySpecialization.and(filterByName);
-
-        return doctorRepository.findAll().stream().filter(complexFilter).collect(Collectors.toList());
-    }
-
-    private Predicate<Doctor> filterByName(String name) {
-        return doctor -> doctor.getName().startsWith(name);
-    }
-
-    private Predicate<Doctor> filterBySpecialization(String specialization) {
-        return doctor -> doctor.getSpecialization().equals(specialization);
+        return doctorRepository.findNullableBySpecializationAndName(specialization.orElse(null),
+                                                                        name.orElse(null));
     }
 
     public Optional<Doctor> getById(Integer id) {
