@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class DoctorService {
-    private final DoctorRepository doctorRepository;
+    private final JpaDoctorRepository doctorRepository;
     private final DoctorConfig doctorConfig;
 
     public List<String> getSpecializations() {
@@ -51,6 +51,10 @@ public class DoctorService {
     }
 
     public Optional<Doctor> delete(Integer id) {
-        return doctorRepository.delete(id);
+        Optional<Doctor> mayBeDoctor = doctorRepository.findById(id);
+
+        mayBeDoctor.ifPresent(doctor -> doctorRepository.delete(doctor.getId()));
+
+        return mayBeDoctor;
     }
 }

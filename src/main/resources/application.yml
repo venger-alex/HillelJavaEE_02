@@ -2,7 +2,7 @@
 doctor-configuration:
   specializations:
     - surgeon
-    - doctor
+    - therapeut
 
 clinic-info:
   name: 'my clinic'
@@ -13,11 +13,11 @@ spring:
   jpa:
     show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate.ddl-auto: update
+    hibernate.ddl-auto: create
 
   datasource:
     username: postgres
     password: 1
-    url: jdbc:postgresql:pets
+    url: jdbc:postgresql:pet_clinic
 
 logging.level.org.hibernate: DEBUG
