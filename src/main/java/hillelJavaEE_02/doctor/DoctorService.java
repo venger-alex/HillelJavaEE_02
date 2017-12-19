@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,10 +17,16 @@ public class DoctorService {
         return doctorConfig.getSpecializations();
     }
 
-    public List<Doctor> getDoctors(Optional<String> specialization,
+    public List<Doctor> getDoctors(Optional<List<String>> specializations,
                                    Optional<String> name) {
-
-        return doctorRepository.findByNameStartingWithIgnoreCase(name.orElse(null));
+        if(specializations.isPresent() && name.isPresent()) {
+            return doctorRepository.findBySpecializationInAndNameStartingWithIgnoreCase(specializations.get(), name.get());
+        } else if(specializations.isPresent()) {
+            return doctorRepository.findBySpecializationIn(specializations.get());
+        } else if(name.isPresent()) {
+            return doctorRepository.findByNameStartingWithIgnoreCase(name.get());
+        }
+        return doctorRepository.findAll();
     }
 
     public Optional<Doctor> getById(Integer id) {
