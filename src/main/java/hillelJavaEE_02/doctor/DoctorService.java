@@ -6,36 +6,27 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class DoctorService {
-    private final DoctorRepository doctorRepository;
+    private final JpaDoctorRepository doctorRepository;
     private final DoctorConfig doctorConfig;
 
     public List<String> getSpecializations() {
         return doctorConfig.getSpecializations();
     }
 
-    public List<Doctor> getDoctors(Optional<String> specialization,
+    public List<Doctor> getDoctors(Optional<List<String>> specializations,
                                    Optional<String> name) {
-
-        Predicate<Doctor> filterBySpecialization = specialization.map(this::filterBySpecialization)
-                .orElse(doctor -> true);
-        Predicate<Doctor> filterByName = name.map(this::filterByName).orElse(doctor -> true);
-        Predicate<Doctor> complexFilter = filterBySpecialization.and(filterByName);
-
-        return doctorRepository.findAll().stream().filter(complexFilter).collect(Collectors.toList());
-    }
-
-    private Predicate<Doctor> filterByName(String name) {
-        return doctor -> doctor.getName().startsWith(name);
-    }
-
-    private Predicate<Doctor> filterBySpecialization(String specialization) {
-        return doctor -> doctor.getSpecialization().equals(specialization);
+        if(specializations.isPresent() && name.isPresent()) {
+            return doctorRepository.findBySpecializationInAndNameStartingWithIgnoreCase(specializations.get(), name.get());
+        } else if(specializations.isPresent()) {
+            return doctorRepository.findBySpecializationIn(specializations.get());
+        } else if(name.isPresent()) {
+            return doctorRepository.findByNameStartingWithIgnoreCase(name.get());
+        }
+        return doctorRepository.findAll();
     }
 
     public Optional<Doctor> getById(Integer id) {
@@ -51,6 +42,10 @@ public class DoctorService {
     }
 
     public Optional<Doctor> delete(Integer id) {
-        return doctorRepository.delete(id);
+        Optional<Doctor> mayBeDoctor = doctorRepository.findById(id);
+
+        mayBeDoctor.ifPresent(doctor -> doctorRepository.delete(doctor.getId()));
+
+        return mayBeDoctor;
     }
 }

@@ -20,9 +20,9 @@ public class DoctorController {
     }
 
     @GetMapping("/doctors")
-    public List<Doctor> getDoctors(@RequestParam Optional<String> specialization,
+    public List<Doctor> getDoctors(@RequestParam Optional<List<String>> specializations,
                                    @RequestParam Optional<String> name) {
-        return doctorService.getDoctors(specialization, name);
+        return doctorService.getDoctors(specializations, name);
     }
 
     @GetMapping("/doctors/{id}")
