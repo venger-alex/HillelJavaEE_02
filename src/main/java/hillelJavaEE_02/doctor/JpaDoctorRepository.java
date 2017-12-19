@@ -10,9 +10,6 @@ import java.util.Optional;
 public interface JpaDoctorRepository extends JpaRepository<Doctor, Integer> {
     Optional<Doctor> findById(Integer id);
 
-    @Query("SELECT doctor FROM Doctor AS doctor " +
-            "WHERE (doctor.specialization = :specialization OR :specialization IS NULL)" +
-            "  AND (doctor.name LIKE :name% OR :name IS NULL ) ")
-    List<Doctor> findNullableBySpecializationAndName(@Param("specialization") String specialization,
-                                                     @Param("name") String name);
+    List<Doctor> findByNameStartingWithIgnoreCase(String name);
+
 }

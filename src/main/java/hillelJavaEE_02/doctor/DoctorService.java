@@ -22,8 +22,7 @@ public class DoctorService {
     public List<Doctor> getDoctors(Optional<String> specialization,
                                    Optional<String> name) {
 
-        return doctorRepository.findNullableBySpecializationAndName(specialization.orElse(null),
-                                                                        name.orElse(null));
+        return doctorRepository.findByNameStartingWithIgnoreCase(name.orElse(null));
     }
 
     public Optional<Doctor> getById(Integer id) {

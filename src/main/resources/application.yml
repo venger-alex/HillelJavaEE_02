@@ -18,6 +18,6 @@ spring:
   datasource:
     username: postgres
     password: 1
-    url: jdbc:postgresql:pet_clinic
+    url: jdbc:postgresql:pet_clinic1
 
 logging.level.org.hibernate: DEBUG
