@@ -10,6 +10,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.LocalDate;
+
 @Configuration
 public class HillelJavaEe02Config {
 
@@ -25,8 +27,8 @@ public class HillelJavaEe02Config {
                 return;
             }
 
-            repository.save(new Pet("Tom", "Cat", 3));
-            repository.save(new Pet("Jerry", "Mouse", 1));
+            repository.save(new Pet("Tom", "Cat", 3, LocalDate.now()));
+            repository.save(new Pet("Jerry", "Mouse", 1, LocalDate.now()));
         };
     }
 

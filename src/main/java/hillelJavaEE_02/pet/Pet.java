@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Data
@@ -21,11 +22,13 @@ public class Pet {
     private String name;
     private String species;
     private Integer age;
+    private LocalDate birthDate;
 
-    public Pet(String name, String species, Integer age) {
+    public Pet(String name, String species, Integer age, LocalDate birthDate) {
         this.name = name;
         this.species = species;
         this.age = age;
+        this.birthDate = birthDate;
     }
 
     public Optional<String> getName() {
