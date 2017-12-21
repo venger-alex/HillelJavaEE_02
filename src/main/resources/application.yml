@@ -20,4 +20,5 @@ spring:
     password: 1
     url: jdbc:postgresql:pet_clinic
 
-logging.level.org.hibernate: DEBUG
+#logging.level.org.hibernate: DEBUG
+#logging.level.org.springframework: DEBUG
