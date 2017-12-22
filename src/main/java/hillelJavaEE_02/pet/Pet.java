@@ -22,12 +22,15 @@ public class Pet {
     private Integer age;
     //@Convert(converter = HibernateDateConverter.class)
     private LocalDate birthDate;
+    @OneToOne(cascade = CascadeType.ALL)
+    private MedicalCard medicalCard;
 
-    public Pet(String name, String species, Integer age, LocalDate birthDate) {
+    public Pet(String name, String species, Integer age, LocalDate birthDate, MedicalCard medicalCard) {
         this.name = name;
         this.species = species;
         this.age = age;
         this.birthDate = birthDate;
+        this.medicalCard = medicalCard;
     }
 
     public Optional<String> getName() {
