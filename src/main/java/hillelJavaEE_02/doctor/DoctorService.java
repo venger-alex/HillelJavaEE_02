@@ -17,12 +17,12 @@ public class DoctorService {
         return doctorConfig.getSpecializations();
     }
 
-    public List<Doctor> getDoctors(Optional<List<String>> specializations,
+    public List<Doctor> getDoctors(Optional<List<Specialization>> specializations,
                                    Optional<String> name) {
         if(specializations.isPresent() && name.isPresent()) {
-            return doctorRepository.findBySpecializationInAndNameStartingWithIgnoreCase(specializations.get(), name.get());
+            return doctorRepository.findBySpecializationsInAndNameStartingWithIgnoreCase(specializations.get(), name.get());
         } else if(specializations.isPresent()) {
-            return doctorRepository.findBySpecializationIn(specializations.get());
+            return doctorRepository.findBySpecializationsIn(specializations.get());
         } else if(name.isPresent()) {
             return doctorRepository.findByNameStartingWithIgnoreCase(name.get());
         }
@@ -34,8 +34,8 @@ public class DoctorService {
     }
 
     public Doctor save(Doctor doctor) {
-        if(!this.getSpecializations().contains(doctor.getSpecialization())) {
-            throw new NoSuchSpecializationException("The specialty should be from the list in the configuration: " + doctor.getSpecialization());
+        if(!this.getSpecializations().contains(doctor.getSpecializations())) {
+            throw new NoSuchSpecializationException("The specialty should be from the list in the configuration: " + doctor.getSpecializations());
         }
 
         return doctorRepository.save(doctor);
