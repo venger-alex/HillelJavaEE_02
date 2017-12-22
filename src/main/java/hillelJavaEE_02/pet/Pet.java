@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Data
@@ -24,13 +25,16 @@ public class Pet {
     private LocalDate birthDate;
     @OneToOne(cascade = CascadeType.ALL)
     private MedicalCard medicalCard;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Prescription> prescriptions;
 
-    public Pet(String name, String species, Integer age, LocalDate birthDate, MedicalCard medicalCard) {
+    public Pet(String name, String species, Integer age, LocalDate birthDate, MedicalCard medicalCard, List<Prescription> prescriptions) {
         this.name = name;
         this.species = species;
         this.age = age;
         this.birthDate = birthDate;
         this.medicalCard = medicalCard;
+        this.prescriptions = prescriptions;
     }
 
     public Optional<String> getName() {

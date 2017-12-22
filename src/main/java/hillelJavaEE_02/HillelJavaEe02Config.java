@@ -3,15 +3,14 @@ package hillelJavaEE_02;
 
 import hillelJavaEE_02.doctor.Doctor;
 import hillelJavaEE_02.doctor.JpaDoctorRepository;
-import hillelJavaEE_02.pet.JpaPetRepository;
-import hillelJavaEE_02.pet.MedicalCard;
-import hillelJavaEE_02.pet.Pet;
-import hillelJavaEE_02.pet.PetService;
+import hillelJavaEE_02.pet.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 public class HillelJavaEe02Config {
@@ -28,10 +27,16 @@ public class HillelJavaEe02Config {
                 return;
             }
 
+            List<Prescription> tomsPrescriptions = new ArrayList<>();
+            tomsPrescriptions.add(new Prescription("paracetamol", LocalDate.now(), 3));
+            tomsPrescriptions.add(new Prescription("asperin", LocalDate.now(), 2));
+            List<Prescription> jerriesPrescriptions = new ArrayList<>();
+            jerriesPrescriptions.add(new Prescription("asperin", LocalDate.now(), 4));
+
             MedicalCard tomsCard = new MedicalCard(LocalDate.now(), "bla-bla");
             MedicalCard jerriesCard = new MedicalCard(LocalDate.now(), "foo-bar");
-            repository.save(new Pet("Tom", "Cat", 3, LocalDate.now(), tomsCard));
-            repository.save(new Pet("Jerry", "Mouse", 1, LocalDate.now(), jerriesCard));
+            repository.save(new Pet("Tom", "Cat", 3, LocalDate.now(), tomsCard, tomsPrescriptions));
+            repository.save(new Pet("Jerry", "Mouse", 1, LocalDate.now(), jerriesCard, jerriesPrescriptions));
         };
     }
 
