@@ -20,7 +20,7 @@ public class Pet {
     private String name;
     private String species;
     private Integer age;
-    @Convert(converter = HibernateDateConverter.class)
+    //@Convert(converter = HibernateDateConverter.class)
     private LocalDate birthDate;
 
     public Pet(String name, String species, Integer age, LocalDate birthDate) {
