@@ -28,7 +28,8 @@ public class Pet {
     @OneToOne(cascade = CascadeType.ALL)
     //@Fetch(FetchMode.JOIN)
     private MedicalCard medicalCard;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    //@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     //@Fetch(FetchMode.JOIN)
     private List<Prescription> prescriptions;
 
