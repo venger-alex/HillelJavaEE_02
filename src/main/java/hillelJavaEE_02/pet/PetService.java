@@ -6,13 +6,19 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 public class PetService {
     private final JpaPetRepository petRepository;
 
+    @Transactional
     public List<Pet> getPetsUsingSingleJpaMethod(Optional<String> species, Optional<Integer> age) {
-        return petRepository.findNullableBySpeciesAndAge(species.orElse(null), age.orElse(null));
+        List<Pet> nullableBySpeciesAndAge = petRepository.findNullableBySpeciesAndAge(species.orElse(null), age.orElse(null));
+
+        nullableBySpeciesAndAge.forEach(pet -> System.out.println(pet.getPrescriptions()));
+
+        return nullableBySpeciesAndAge;
     }
 
     public List<Pet> getPetsUsingSeparateJpaMethods(Optional<String> species, Optional<Integer> age) {

@@ -20,3 +20,12 @@ Jackson
 Configuration: Spring appendix A https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 
 Spring data method query DSL https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation
+
+##YAML
+Properties from enum SerializationFeature: 
+    spring:
+        jackson:
+            serialization:
+                WRITE_DATES_AS_TIMESTAMPS: false
+                INDENT_OUTPUT: true
+                
