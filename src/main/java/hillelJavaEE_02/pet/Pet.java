@@ -25,7 +25,7 @@ public class Pet {
     private LocalDate birthDate;
     @OneToOne(cascade = CascadeType.ALL)
     private MedicalCard medicalCard;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Prescription> prescriptions;
 
     public Pet(String name, String species, Integer age, LocalDate birthDate, MedicalCard medicalCard, List<Prescription> prescriptions) {
