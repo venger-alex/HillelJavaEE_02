@@ -1,5 +1,7 @@
 package hillelJavaEE_02.pet;
 
+import hillelJavaEE_02.pet.dto.PrescriptionInputDto;
+import hillelJavaEE_02.store.NoSuchMedicineException;
 import hillelJavaEE_02.util.ErrorBody;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -58,6 +60,20 @@ public class PetController {
         petService.delete(id)
                 .orElseThrow(NoSuchPetException::new);
     }
+
+    @PostMapping("/pets/{id}/prescriptions")
+    public void prescribe(@PathVariable Integer id,
+                          @RequestBody PrescriptionInputDto dto) {
+        petService.prescribe(id,
+                                dto.getDescription(),
+                                dto.getMedicineName(),
+                                dto.getQuantity(),
+                                dto.getTimesPerDay());
+    }
+
+    @ExceptionHandler(NoSuchMedicineException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void noSuchMedicine(){}
 
 //    @ExceptionHandler(MyException.class)
 //    @ResponseStatus(HttpStatus.BAD_REQUEST)

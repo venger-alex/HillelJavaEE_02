@@ -4,6 +4,8 @@ package hillelJavaEE_02;
 import hillelJavaEE_02.doctor.Doctor;
 import hillelJavaEE_02.doctor.JpaDoctorRepository;
 import hillelJavaEE_02.pet.*;
+import hillelJavaEE_02.store.Medicine;
+import hillelJavaEE_02.store.MedicineRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,10 +17,10 @@ import java.util.List;
 @Configuration
 public class HillelJavaEe02Config {
 
-    @Bean
-    PetService petService(JpaPetRepository petRepository){
-        return new PetService(petRepository);
-    }
+//    @Bean
+//    PetService petService(JpaPetRepository petRepository){
+//        return new PetService(petRepository);
+//    }
 
     @Bean
     CommandLineRunner initDb(JpaPetRepository repository) {
@@ -51,5 +53,18 @@ public class HillelJavaEe02Config {
             repository.save(new Doctor("Bob", "therapeut"));
         };
     }
+
+    @Bean
+    CommandLineRunner initMedicineStore(MedicineRepository repository) {
+        return args -> {
+            if(!repository.findAll().isEmpty()) {
+                return;
+            }
+
+            repository.save(new Medicine("Brilliant green", 1));
+
+        };
+    }
+
 
 }
