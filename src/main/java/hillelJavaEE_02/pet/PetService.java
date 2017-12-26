@@ -1,16 +1,23 @@
 package hillelJavaEE_02.pet;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import hillelJavaEE_02.store.StoreService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.retry.annotation.Retryable;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Service
 @RequiredArgsConstructor
 public class PetService {
     private final JpaPetRepository petRepository;
+    private final StoreService storeService;
 
     @Transactional
     public List<Pet> getPetsUsingSingleJpaMethod(Optional<String> species, Optional<Integer> age) {
@@ -70,5 +77,21 @@ public class PetService {
         mayBePet.ifPresent(pet -> petRepository.delete(pet.getId()));
         //mayBePet.map(Pet::getId).ifPresent(petRepository::delete);
         return mayBePet;
+    }
+
+    @Transactional
+    @Retryable(ObjectOptimisticLockingFailureException.class)
+    public void prescribe(Integer petId,
+                          String description,
+                          String medicineName,
+                          Integer quantity,
+                          Integer timesPerDay) {
+        Pet pet = petRepository.findById(petId).orElseThrow(RuntimeException::new);
+
+        pet.getPrescriptions().add(new Prescription(description, LocalDate.now(), timesPerDay));
+
+        petRepository.save(pet);
+
+        storeService.decrement(medicineName, quantity);
     }
 }
