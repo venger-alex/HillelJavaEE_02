@@ -30,10 +30,10 @@ public class HillelJavaEe02Config {
             }
 
             List<Prescription> tomsPrescriptions = new ArrayList<>();
-            tomsPrescriptions.add(new Prescription("paracetamol", LocalDate.now(), 3));
-            tomsPrescriptions.add(new Prescription("asperin", LocalDate.now(), 2));
+            tomsPrescriptions.add(new Prescription("paracetamol", LocalDate.now(), 3, MedicineType.PERORAL));
+            tomsPrescriptions.add(new Prescription("asperin", LocalDate.now(), 2, MedicineType.PERORAL));
             List<Prescription> jerriesPrescriptions = new ArrayList<>();
-            jerriesPrescriptions.add(new Prescription("asperin", LocalDate.now(), 4));
+            jerriesPrescriptions.add(new Prescription("asperin", LocalDate.now(), 4, MedicineType.PERORAL));
 
             MedicalCard tomsCard = new MedicalCard(LocalDate.now(), "bla-bla");
             MedicalCard jerriesCard = new MedicalCard(LocalDate.now(), "foo-bar");
