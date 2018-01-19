@@ -4,6 +4,7 @@ package hillelJavaEE_02;
 import hillelJavaEE_02.doctor.Doctor;
 import hillelJavaEE_02.doctor.JpaDoctorRepository;
 import hillelJavaEE_02.doctor.Specialization;
+import hillelJavaEE_02.doctor.SpecializationsName;
 import hillelJavaEE_02.pet.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -49,10 +50,10 @@ public class HillelJavaEe02Config {
             }
 
             List<Specialization> alexSpecializations = new ArrayList<>();
-            alexSpecializations.add(new Specialization("surgeon"));
-            alexSpecializations.add(new Specialization("therapeut"));
+            alexSpecializations.add(new Specialization(SpecializationsName.SURGEON));
+            //alexSpecializations.add(new Specialization(SpecializationsName.THERAPEUT));
             List<Specialization> bobSpecializations = new ArrayList<>();
-            bobSpecializations.add(new Specialization("therapeut"));
+            bobSpecializations.add(new Specialization(SpecializationsName.THERAPEUT));
 
             repository.save(new Doctor("Alex", alexSpecializations));
             repository.save(new Doctor("Bob", bobSpecializations));

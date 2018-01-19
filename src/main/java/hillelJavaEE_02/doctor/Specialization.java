@@ -12,10 +12,10 @@ public class Specialization {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    //@Column(unique = true)
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private SpecializationsName name;
 
-    public Specialization(String name) {
+    public Specialization(SpecializationsName name) {
         this.name = name;
     }
 }
