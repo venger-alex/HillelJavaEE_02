@@ -21,7 +21,8 @@ public class PetService {
 
     @Transactional
     public List<Pet> getPetsUsingSingleJpaMethod(Optional<String> species, Optional<Integer> age) {
-        List<Pet> nullableBySpeciesAndAge = petRepository.findNullableBySpeciesAndAge(species.orElse(null), age.orElse(null));
+        List<Pet> nullableBySpeciesAndAge = petRepository.findNullableBySpeciesAndAge(species.orElse(null),
+                                                                                        age.orElse(null));
 
         nullableBySpeciesAndAge.forEach(pet -> System.out.println(pet.getPrescriptions()));
 

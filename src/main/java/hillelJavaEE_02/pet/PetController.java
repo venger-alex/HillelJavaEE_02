@@ -4,11 +4,13 @@ import hillelJavaEE_02.pet.dto.PrescriptionInputDto;
 import hillelJavaEE_02.store.NoSuchMedicineException;
 import hillelJavaEE_02.util.ErrorBody;
 import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +30,8 @@ public class PetController {
 
     @GetMapping("/pets")
     public List<Pet> getPets(@RequestParam Optional<String> species,
-                             @RequestParam Optional<Integer> age) {
+                             @RequestParam Optional<Integer> age,
+                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> birthDate) {
         return petService.getPetsUsingSingleJpaMethod(species, age);
     }
 
